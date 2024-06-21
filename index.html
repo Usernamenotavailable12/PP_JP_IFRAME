@@ -105,20 +105,28 @@
   </div>
 </div>
 <script>
-  function fetchData() {
-    fetch('https://api-dk12.pragmaticplay.net/IntegrationService/v3/JackpotFeeds/extended/jackpots/?login=samsara_ambassadori&currency=GEL&hash=d4fd90d5f376bc961e4c8fb795557153')
-      .then(response => response.json())
-      .then(data => {
-        const numbers = data.jackpots[0].tiers.map(tier => (Math.round(tier.amount * 100) / 100).toFixed(2));
-        const numberElements = document.querySelectorAll('.number');
-        numberElements.forEach((element, index) => {
-          element.textContent = `${numbers[index]}`;
-        });
-      })
-      .catch(error => console.error('Error fetching JSON:', error));
+function fetchData() {
+  fetch('https://api-dk12.pragmaticplay.net/IntegrationService/v3/JackpotFeeds/extended/jackpots/?login=samsara_ambassadori&currency=GEL&hash=d4fd90d5f376bc961e4c8fb795557153')
+    .then(response => response.json())
+    .then(data => {
+      const numbers = data.jackpots[0].tiers.map(tier => formatNumber((Math.round(tier.amount * 100) / 100).toFixed(2)));
+      const numberElements = document.querySelectorAll('.number');
+      numberElements.forEach((element, index) => {
+        element.textContent = `${numbers[index]}`;
+      });
+    })
+    .catch(error => console.error('Error fetching JSON:', error));
+}
+
+function formatNumber(number) {
+  const [integerPart, decimalPart] = number.split('.');
+  if (integerPart.length > 3) {
+    return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.' + decimalPart;
   }
+  return number;
+}
 
-  fetchData();
+fetchData();
 
-  setInterval(fetchData, 5000);
+setInterval(fetchData, 5000);
 </script>
