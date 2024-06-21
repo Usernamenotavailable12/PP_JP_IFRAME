@@ -13,12 +13,6 @@
     height: 118px;
   }
 
-  .pragmatic-data-container.small .pragmatic-data span {
-    width: 212px;
-    height: 58px;
-    margin: 19px auto;
-    font-size: 29px;
-  }
 
   .pragmatic-data {
     width: 203px;
@@ -60,7 +54,17 @@
     color: rgb(255, 255, 255);
     line-height: 55px;
     text-align: start;
-    margin-left: 80px;
+    margin-left: 70px;
+  }
+
+  .pragmatic-data::after {
+    content: '₾';
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -3rem;
+    color: rgb(255, 255, 255);
+    margin-right: 28px;
+    font-size: 20px;
   }
 
   @media (max-width: 820px) {
@@ -108,7 +112,7 @@
         const numbers = data.jackpots[0].tiers.map(tier => (Math.round(tier.amount * 100) / 100).toFixed(2));
         const numberElements = document.querySelectorAll('.number');
         numberElements.forEach((element, index) => {
-          element.textContent = `${numbers[index]}` + ' ' + '₾';
+          element.textContent = `${numbers[index]}`;
         });
       })
       .catch(error => console.error('Error fetching JSON:', error));
